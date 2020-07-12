@@ -3,8 +3,8 @@
 # apart from image subsampling. Example 2 focuses on processing scene data
 # to illustrate effects of different illuminations on information.
 
-# set the working directory
-setwd("~/06.optocom/03.software/klo_v1/R/")
+# set the working directory. CARE! change to the path where the R code lives
+setwd("~/Desktop/klo_v1/R/")
 
 # load the necessary libraries
 library(FNN)      # for nearest-neighbor search
