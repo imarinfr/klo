@@ -1,0 +1,16 @@
+metadata_version: 1
+name: 'KLo v1.0: Offset estimator of differential entropy and mutual information for multivariate data'
+description: 'Capsule for review of the software submitted to SoftwareX with title "KLo: Offset estimator of differential entropy and mutual information for multivariate data"'
+authors:
+- name: Iván Marín-Franch
+  affiliations:
+  - name: Computational Optometry, Atarfe, Granada, Spain
+- name: Martín Sanz-Sabater
+  affiliations:
+  - name: Optics Department, Universitat de València, Burjassot, Valencia, Spain
+- name: David H Foster
+  affiliations:
+  - name: Department of Electrical & Electronic Engineering, University of Manchester, Manchester, UK
+corresponding_contributor:
+  name: Iván Marín-Franch
+  email: imarinfr@optocom.es

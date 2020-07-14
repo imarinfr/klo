@@ -12,8 +12,8 @@ from mikl import entg, mig, entkl, mikl
 # EXAMPLE 1
 # Load 1005 x 1306 x 3 scene data coded as LMS (long-, medium-, and
 # short-wavelength) cone photoreceptor responses of human eye at each pixel
-lms1 = loadmat("../data/lms_sete_fontes_1333.mat")["lms1"]
-lms2 = loadmat("../data/lms_sete_fontes_1335.mat")["lms2"]
+lms1 = loadmat("../../data/lms_sete_fontes_1333.mat")["lms1"]
+lms2 = loadmat("../../data/lms_sete_fontes_1335.mat")["lms2"]
 nr, nc, nw = lms1.shape
 
 # Reshape LMS scene data into 1312530 x 3 arrays
@@ -40,14 +40,14 @@ print(mikl(lms1, lms2, "klo"))
 # https://personalpages.manchester.ac.uk/staff/david.foster/Tutorial_Colour_Information/Tutorial_Color_Information.html
 
 # Load 255 x 335 x 33 scene spectral reflectance data (33 wavelengths)
-reflectances = loadmat("../data/ref4_scene5.mat")["reflectances"]
+reflectances = loadmat("../../data/ref4_scene5.mat")["reflectances"]
 nr, nc, nw = reflectances.shape
 
 # Load daylight illuminants of correlated color temperature 25000 K and
 # 4000 K; other daylight illuminant combinations can be tested for their
 # effect on mutual information, e.g. 6500 K
-illum_25000 = loadmat("../data/illum_25000.mat")["illum_25000"]
-illum_4000 = loadmat("../data/illum_4000.mat")["illum_4000"]
+illum_25000 = loadmat("../../data/illum_25000.mat")["illum_25000"]
+illum_4000 = loadmat("../../data/illum_4000.mat")["illum_4000"]
 
 # Convert to 255 x 335 x 33 scene spectral radiances for each illuminant
 # (wavelength for-loop is used for clarity, not efficiency)
@@ -60,7 +60,6 @@ for i in range(33):
 # Reshape scene data into 85425 x 3 arrays
 radiances_25000 = reshape(radiances_25000, (nr * nc, nw), order="F")
 radiances_4000 = reshape(radiances_4000,  (nr * nc, nw), order="F")
-
 
 # Get 33 x 4 RGB sensor curves for chosen sensor, here 'agilent'
 # Remove first column wavelength vector as implicit in data structure
