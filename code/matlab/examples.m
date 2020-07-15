@@ -3,7 +3,7 @@
 % apart from image subsampling. Example 2 focuses on processing scene data
 % to illustrate effects of different illuminations on information.
 
-disp('These nearest-neighbor calculations are time consuming, please be patient...')
+disp('These nearest-neighbor calculations are time consuming: please be patient...')
 
 % EXAMPLE 1
 disp('EXAMPLE 1. Please see comments in the script for details')
@@ -19,17 +19,17 @@ lms2 = reshape(lms2, nr * nc, nw);
 
 % Get Gaussian and KL estimates of differential entropy without and
 % with offset correction
-disp('Differential entropy as estimated by the Gaussian approximation, the KL estimator, and its offset version:')
-disp(['The Gaussian approximation: ' num2str(entg([lms1 lms2])), ' bits'])
-disp(['The KL estimator: ' num2str(entkl([lms1 lms2], 'kl')), ' bits'])
-disp(['The offset KL estimator: ' num2str(entkl([lms1 lms2], 'klo')), ' bits'])
+disp('Differential entropy estimated by the Gaussian approximation, the KL estimator, and its offset version:')
+disp(['  Gaussian approximation: ' num2str(entg([lms1 lms2])), ' bits'])
+disp(['  KL estimator: ' num2str(entkl([lms1 lms2], 'kl')), ' bits'])
+disp(['  Offset KL estimator: ' num2str(entkl([lms1 lms2], 'klo')), ' bits'])
 
 % Get Gaussian and KL estimates of mutual information without and
 % with the offset correction
-disp('Mutual information as estimated by the Gaussian approximation, the KL estimator, and its offset version:')
-disp(['The Gaussian approximation: ' num2str(mig(lms1, lms2)), ' bits'])
-disp(['The KL estimator: ' num2str(mikl(lms1, lms2, 'kl')), ' bits'])
-disp(['The offset KL estimator: ' num2str(mikl(lms1, lms2, 'klo')), ' bits'])
+disp('Mutual information estimated by the Gaussian approximation, the KL estimator, and its offset version:')
+disp(['  Gaussian approximation: ' num2str(mig(lms1, lms2)), ' bits'])
+disp(['  KL estimator: ' num2str(mikl(lms1, lms2, 'kl')), ' bits'])
+disp(['  Offset KL estimator: ' num2str(mikl(lms1, lms2, 'klo')), ' bits'])
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % EXAMPLE 2
@@ -37,6 +37,7 @@ disp(['The offset KL estimator: ' num2str(mikl(lms1, lms2, 'klo')), ' bits'])
 % scene under different illuminants and viewed by camera with different
 % sensor spectra or by human eye. For more details see following:
 % https://personalpages.manchester.ac.uk/staff/david.foster/Tutorial_Colour_Information/Tutorial_Color_Information.html
+
 disp('EXAMPLE 2. Please see comments in the script for details')
 
 % Load 255 x 335 x 33 scene spectral reflectance data (33 wavelengths)
@@ -73,17 +74,17 @@ rgb_4000 = radiances_4000 * rgbsens;
 
 % Get Gaussian and KL estimates of differential entropy without and
 % with the offset correction
-disp('Differential entropy as estimated by the Gaussian approximation, the KL estimator, and its offset version:')
-disp(['The Gaussian approximation: ' num2str(entg([rgb_25000 rgb_4000])), ' bits'])
-disp(['The KL estimator: ' num2str(entkl([rgb_25000 rgb_4000], 'kl')), ' bits'])
-disp(['The offset KL estimator: ' num2str(entkl([rgb_25000 rgb_4000], 'klo')), ' bits'])
+disp('Differential entropy estimated by the Gaussian approximation, the KL estimator, and its offset version:')
+disp(['  Gaussian approximation: ' num2str(entg([rgb_25000 rgb_4000])), ' bits'])
+disp(['  KL estimator: ' num2str(entkl([rgb_25000 rgb_4000], 'kl')), ' bits'])
+disp(['  Offset KL estimator: ' num2str(entkl([rgb_25000 rgb_4000], 'klo')), ' bits'])
 
 % Get Gaussian and KL estimates of mutual information without and
 % with the offset correction
-disp('Mutual information as estimated by the Gaussian approximation, the KL estimator, and its offset version:')
-disp(['The Gaussian approximation: ' num2str(mig(rgb_25000, rgb_4000)), ' bits'])
-disp(['The KL estimator: ' num2str(mikl(rgb_25000, rgb_4000, 'kl')), ' bits'])
-disp(['The offset KL estimator: ' num2str(mikl(rgb_25000, rgb_4000, 'klo')), ' bits'])
+disp('Mutual information estimated by the Gaussian approximation, the KL estimator, and its offset version:')
+disp(['  Gaussian approximation: ' num2str(mig(rgb_25000, rgb_4000)), ' bits'])
+disp(['  KL estimator: ' num2str(mikl(rgb_25000, rgb_4000, 'kl')), ' bits'])
+disp(['  Offset KL estimator: ' num2str(mikl(rgb_25000, rgb_4000, 'klo')), ' bits'])
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % (c) Ivan Marin-Franch and David H Foster 10-Jul-20
