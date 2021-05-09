@@ -4,7 +4,10 @@
 
 #' @rdname mikl
 #' @title Estimates of the differential entropy and mutual information
-#' @description TO COMPLETE
+#' @description Functions that compute the Gaussian and the regular
+#' and offset versions of the Kozachenko-Leonenko estimators of the
+#' differential entropy and mutual information for multivariate
+#' continuous variables
 #' @section Differential entropy estimates:
 #' \itemize{
 #'   \item\code{entG}  Gaussian estimate of the differential entropy of the
@@ -30,13 +33,30 @@
 #' @param x,y n-by-d numeric matrices, in which the n rows correspond to observations
 #'            and the d columns to variables (or coordinates) of the multivariate
 #'            distributions
-#' @param type is the type of estimator, \code{'kl'} for the Kozachenko-Leonenko and
-#'             \code{'klo'} (default) for its offset version.
+#' @param type is the type of estimator, \code{"kl"} for the Kozachenko-Leonenko and
+#'             \code{"klo"} (default) for its offset version.
 #' @param k is the rank of the nearest neighbor for which to search, \code{1},
 #'          the nearest neighbor (default), \code{2}, the second nearest,
 #'          and so on.
 #' @examples
-#' # ADD EXAMPLES HERE
+#' # Generate values from two random Gaussian vectors with different standard deviations
+#' n      <- 10000 # sample size
+#' sdx    <- 3 # standard deviation of the Gaussian
+#' sdy    <- 5 # standard deviation of the Gaussian
+#' x      <- rnorm(n, 0, sdx)
+#' y      <- rnorm(n, 0, sdy)
+#' # theoretical results
+#' exth   <- 1 / 2 * log2((2 * pi * exp(1)) * sdx^2) # theoretical differential entropy
+#' eyth   <- 1 / 2 * log2((2 * pi * exp(1)) * sdy^2) # theoretical differential entropy
+#' mith   <- 0 # the theoretical mutual information is zero as x and y are independently generated
+#' # Gaussian estimates
+#' exg    <- entg(x)   # differential entropy for x
+#' eyg    <- entg(y)   # differential entropy for y
+#' mixyg  <- mig(x, y) # mutual information between x and y
+#' # Kozachenko-Leonenko estimates
+#' exkl   <- entkl(x)   # differential entropy for x
+#' eykl   <- entkl(y)   # differential entropy for y
+#' mixykl <- mikl(x, y) # mutual information between x and y
 #' @export
 entg <- function(x) {
   # convert x to matrix if not already

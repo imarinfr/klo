@@ -23,3 +23,17 @@ Obtain camera sensors' sensitivities. You can choose sensors for
   \item\code{eye} the cone photoreceptors of the human eye
 }
 }
+\examples{
+# sensitivities of the eye
+s <- rgbcurves()
+plot(s[,1], s[,2], typ = "l", col = "red", # red sensitivity curve
+     xlab = "wavelength", ylab = "relative sensitivity")
+lines(s[,1], s[,3], col = "green")         # green sensitivity curve
+lines(s[,1], s[,4], col = "blue")          # blue sensitivity curve
+# sensitivities of the Agilent CMOS sensor array
+s <- rgbcurves(device = "agilent")
+plot(s[,1], s[,2], typ = "l", col = "red", # red sensitivity curve
+     xlab = "wavelength", ylab = "relative sensitivity")
+lines(s[,1], s[,3], col = "green")         # green sensitivity curve
+lines(s[,1], s[,4], col = "blue")          # blue sensitivity curve
+}

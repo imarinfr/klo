@@ -14,6 +14,19 @@
 #'               devices listed in the description, that is, \code{agilent},
 #'               \code{foveonx3}, \code{kodak}, \code{nikond1}, \code{sony}, 
 #'               or \code{eye} (default).
+#' @examples
+#' # sensitivities of the eye
+#' s <- rgbcurves()
+#' plot(s[,1], s[,2], typ = "l", col = "red", # red sensitivity curve
+#'      xlab = "wavelength", ylab = "relative sensitivity")
+#' lines(s[,1], s[,3], col = "green")         # green sensitivity curve
+#' lines(s[,1], s[,4], col = "blue")          # blue sensitivity curve
+#' # sensitivities of the Agilent CMOS sensor array
+#' s <- rgbcurves(device = "agilent")
+#' plot(s[,1], s[,2], typ = "l", col = "red", # red sensitivity curve
+#'      xlab = "wavelength", ylab = "relative sensitivity")
+#' lines(s[,1], s[,3], col = "green")         # green sensitivity curve
+#' lines(s[,1], s[,4], col = "blue")          # blue sensitivity curve
 #' @export
 rgbcurves <- function(device = "eye") {
     # Check camera sensors
