@@ -1,11 +1,20 @@
-# Obtain camera sensors' sensitivities. You can choose sensors for
+#' @rdname rgbcurves
+#' @title Sensor sensitivities of the eye and of different cameras
+#' @description Obtain camera sensors' sensitivities. You can choose sensors for
 # the following six devices:
-#   'agilent': Agilent CMOS sensor array from a Concord EyeQ digital camera
-#   'foveonx3': Foveon X3 sensor array from a Sigma SD9 digital camera
-#   'kodak': Kodak CCD sensor array from a Kodak DCS-460 digital camera
-#   'nikond1': a CCD sensor array from a Nikon D1 digital camera
-#   'sony': Sony CCD sensor array from a Hewlett-Packard digital camera
-#   'eye': the cone photoreceptors of the human eye
+#' \itemize{
+#'   \item\code{agilent} Agilent CMOS sensor array from a Concord EyeQ digital camera
+#'   \item\code{foveonx3} Foveon X3 sensor array from a Sigma SD9 digital camera
+#'   \item\code{kodak} Kodak CCD sensor array from a Kodak DCS-460 digital camera
+#'   \item\code{nikond1} a CCD sensor array from a Nikon D1 digital camera
+#'   \item\code{sony} Sony CCD sensor array from a Hewlett-Packard digital camera
+#'   \item\code{eye} the cone photoreceptors of the human eye
+#' }
+#' @param device from which to retrieve sensor's sensitivities. It can be any of the
+#'               devices listed in the description, that is, \code{agilent},
+#'               \code{foveonx3}, \code{kodak}, \code{nikond1}, \code{sony}, 
+#'               or \code{eye} (default).
+#' @export
 rgbcurves <- function(device = "eye") {
     # Check camera sensors
     if(device != "agilent" && device != "foveonx3" && device != "kodak" &&

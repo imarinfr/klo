@@ -1,0 +1,18 @@
+Package: klo
+Type: Package
+Title: KLo: Offset estimator of differential entropy and mutual information for multivariate data
+Version: 0.1
+Date: 2021-05-09
+Authors@R: c(
+    person("Ivan", "Marin-Franch", email="imarinfr@optocom.es", role = c("cre", "fnd", "aut", "rev", "cph")),
+    person("David H", "Foster", role = c("aut", "ctb", "cph")),
+    person("David H", "Foster", role = c("fnd", "aut","rev", "cph")))
+Maintainer: Ivan Marin-Franch <imarinfr@optocom.es>
+Description: This klo package implements an offset version of the Kozachenko-Leonenko estimator of differential entropy and mutual information for multivariate data that that markedly improves their convergence.
+License: GPL-3
+URL: https://www.optocom.es
+Depends: R(>= 3.5)
+Imports: stats, expm, FNN
+LazyData: true
+Encoding: UTF-8
+RoxygenNote: 7.1.1
