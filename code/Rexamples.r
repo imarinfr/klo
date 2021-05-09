@@ -1,25 +1,21 @@
 # Script to obtain sample estimates of differential entropy and mutual
-# information from trivariate data. Example 1 is the same as in the article
-# apart from image subsampling. Example 2 focuses on processing scene data
-# to illustrate effects of different illuminations on information.
+# information from trivariate data. Example 1 uses the same scene used
+# for Figure 1. Example 2 focuses on processing scene data to illustrate
+# effects of different illuminations on information.
 
-# set the working directory. CARE! change to the path where the R code lives
-#setwd(<DIRECTORY WHERE examples.r AND mikl.r live>)
+# set the working directory to the subfolder "code" in the GIT checkout
+# directory.
+#setwd(<CHECKOUT DIRECTORY>)
 
 # load the necessary libraries
-library(FNN)      # for nearest-neighbor search
-library(expm)     # for the matrix square root
+library(klo)      # the KLo package
 library(R.matlab) # to load MatLab files in R
-
-# source the codes with need to compute the estimates
-source("mikl.r")
-source("rgbcurves.r")
 
 # EXAMPLE 1
 # Load 1005 x 1306 x 3 scene data coded as LMS (long-, medium-, and
 # short-wavelength) cone photoreceptor responses of human eye at each pixel
-lms1 <- readMat("../../data/lms_sete_fontes_1333.mat")$lms1
-lms2 <- readMat("../../data/lms_sete_fontes_1335.mat")$lms2
+lms1 <- readMat("data/lms_sete_fontes_1333.mat")$lms1
+lms2 <- readMat("data/lms_sete_fontes_1335.mat")$lms2
 
 # Reshape LMS scene data into 1312530 x 3 arrays
 nr <- dim(lms1)[1]
@@ -48,7 +44,7 @@ print(mikl(lms1, lms2, "klo"))
 # https://personalpages.manchester.ac.uk/staff/david.foster/Tutorial_Colour_Information/Tutorial_Color_Information.html
 
 # Load 255 x 335 x 33 scene spectral reflectance data (33 wavelengths)
-reflectances <- readMat("../../data/ref4_scene5.mat")$reflectances
+reflectances <- readMat("data/ref4_scene5.mat")$reflectances
 nr <- dim(reflectances)[1]
 nc <- dim(reflectances)[2]
 nw <- dim(reflectances)[3]
@@ -56,8 +52,8 @@ nw <- dim(reflectances)[3]
 # Load daylight illuminants of correlated color temperature 25000 K and
 # 4000 K; other daylight illuminant combinations can be tested for their
 # effect on mutual information, e.g. 6500 K
-illum_25000 <- readMat("../../data/illum_25000.mat")$illum.25000
-illum_4000 <-readMat("../../data/illum_4000.mat")$illum.4000
+illum_25000 <- readMat("data/illum_25000.mat")$illum.25000
+illum_4000 <-readMat("data/illum_4000.mat")$illum.4000
 
 # Convert to 255 x 335 x 33 scene spectral radiances for each illuminant
 # (wavelength for-loop is used for clarity, not efficiency)
