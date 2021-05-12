@@ -6,13 +6,13 @@
 # not as conventional RGB triplets but as LMS triplets, corresponding to activities
 # in the long-, medium-, and short-wavelength-sensitive cone photoreceptors of the eye.
 # Each data set is stored as a 1005x1306x3 array, where the first two dimensions index
-# pixel coordinates and the the third dimension indexes LMS values.
+# pixel coordinates and the third dimension indexes LMS values.
 
 # To run this example, we need to set the working directory to the folder where the
 # https://github.com/imarinfr/klo repository has been checked out.
 #setwd(<CHECKOUT DIRECTORY>)
 
-# The first step is to load and reformat the each data set into three columns of
+# The first step is to load and reformat each data set into three columns of
 # LMS values lms1 and lms2
 library(klo)
 library(R.matlab)
