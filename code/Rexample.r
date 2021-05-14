@@ -5,7 +5,7 @@
 # (other images are available with the software). The image values were expressed
 # not as conventional RGB triplets but as LMS triplets, corresponding to activities
 # in the long-, medium-, and short-wavelength-sensitive cone photoreceptors of the eye.
-# Each data set is stored as a 503x353x3 array, where the first two dimensions index
+# Each data set is stored as a 507x657x3 array, where the first two dimensions index
 # pixel coordinates and the third dimension indexes LMS values.
 
 # To run this example, we need to set the working directory to the folder where the
@@ -16,8 +16,8 @@
 # LMS values lms1 and lms2
 library(klo)
 library(R.matlab)
-lms1 <- readMat("klo/data/lms_sete_fontes_1333.mat")$lms1
-lms2 <- readMat("klo/data/lms_sete_fontes_1335.mat")$lms2
+lms1 <- readMat("klo/data/lms_sete_fontes_1320.mat")$lms1
+lms2 <- readMat("klo/data/lms_sete_fontes_1321.mat")$lms2
 nr <- dim(lms1)[1]
 nc <- dim(lms1)[2]
 nw <- dim(lms1)[3]
