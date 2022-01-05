@@ -12,14 +12,14 @@
 
 # To run this example, we need to set the working directory to the folder
 # where the https://github.com/imarinfr/klo repository has been checked out.
-#setwd(<CHECKOUT DIRECTORY>)
+#setwd(<CHECKOUT DIRECTORY>/example)
 
 # The first step is to load and reformat each data set into three columns
 # of LMS values lms1 and lms2
 library(klo)
 library(R.matlab)
-lms1 <- readMat("klo/data/lms_sete_fontes_1320.mat")$lms1
-lms2 <- readMat("klo/data/lms_sete_fontes_1321.mat")$lms2
+lms1 <- readMat("../data/lms_sete_fontes_1320.mat")$lms1
+lms2 <- readMat("../data/lms_sete_fontes_1321.mat")$lms2
 nr <- dim(lms1)[1]
 nc <- dim(lms1)[2]
 nw <- dim(lms1)[3]
