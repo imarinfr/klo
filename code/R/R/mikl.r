@@ -133,6 +133,7 @@ mikl <- function(x, y, type = "klo", k = 1)
 # Samworth and Yuan, Annals of Statistics (2019).
 klweights <- function(k, d) {
   dprime <- floor(d / 4)
+  if(k == 1) return(1)
   if(dprime == 0) return(c(rep(0, k - 1), 1))
   g <- matrix(rep(0, (dprime + 1) * k), ncol = k)
   g[1,] <- rep(1, k)

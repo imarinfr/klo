@@ -5,7 +5,9 @@
 % Samworth and Yuan, Annals of Statistics (2019).
 function w = klweights(k, d)
 dprime = floor(d / 4);
-if dprime == 0
+if k == 1
+    w = 1;
+elseif dprime == 0
     w = [zeros(1, k - 1), 1];
 else
     g = zeros(dprime + 1, k);
