@@ -1,9 +1,11 @@
-function mi = mikl(x, y, type, k)
+function mi = mikl(x, y, type, k, px, py, pxy, w)
 % MIKL: The Kozachenko-Leonenko (KL) estimate of mutual information between
 % the multivariate random variables x and y. 
 %
 % If type is 'kl', the raw KL estimator is computed.
 % If type is 'klo', the offset KL estimator is computed.
+% If type is 'wkl', the raw NN-weighted KL estimator with is computed.
+% If type is 'wklo', the offset NN-weighted KL estimator is computed.
 %
 % k is the nearest neighbor for which to search, 1 the nearest neighbor, 2,
 % the second nearest, and so on
@@ -16,6 +18,11 @@ function mi = mikl(x, y, type, k)
 if nargin < 2, error('please revise input'); end
 if nargin < 3, type = 'klo'; end
 if nargin < 4, k = 1; end
+if nargin < 5, px = []; end
+if nargin < 6, py = []; end
+if nargin < 7, pxy = []; end
+if nargin < 8, w = []; end
 % computation of mutual information is based on its decomposition in
 % marginal and joint differential entropies
-mi = entkl(x, type, k) + entkl(y, type, k) - entkl([x y], type, k);
+mi = entkl(x, type, k, px, w) + entkl(y, type, k, py, w) ...
+    - entkl([x y], type, k, pxy, w);

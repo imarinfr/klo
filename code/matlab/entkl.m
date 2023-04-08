@@ -16,6 +16,8 @@ function ent = entkl(x, type, k, p, w)
 if nargin < 1, error('please revise input'); end
 if nargin < 2, type = 'klo'; end
 if nargin < 3, k = 1; end
+if nargin < 4, p = []; end
+if nargin < 5, w = []; end
 if ~strcmp(type, 'kl') && ~strcmp(type, 'klo') && ...
         ~strcmp(type, 'wkl') && ~strcmp(type, 'wklo')
     error('incorrect type of estimator');
@@ -46,7 +48,7 @@ ent = log2(exp(d * mean(ldist) + ...
 if strcmp(type, 'kl') || strcmp(type, 'klo') % unweighted kl
     ent = ent(k);
 else % weighted kl
-    if nargin < 4
+    if isempty(w)
         w = klweights(k, d);
     elseif length(w) ~= k
         error('Weights array w has to be of length k');

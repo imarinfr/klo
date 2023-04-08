@@ -41,7 +41,7 @@ require(expm)
 #' @param k is the rank of the nearest neighbor for which to search, \code{1},
 #'          the nearest neighbor (default), \code{2}, the second nearest,
 #'          and so on.
-#' @param p TO BE DEFINED.
+#' @param p,px,py,pxy TO BE DEFINED.
 #' @param w Weights to use for NN weighting.
 #' @examples
 #' # Generate values from two random Gaussian vectors with different standard deviations
@@ -120,10 +120,11 @@ entkl <- function(x, type = "klo", k = 1, p = NULL, w = NULL) {
 
 #' @rdname mikl
 #' @export
-mikl <- function(x, y, type = "klo", k = 1)
+mikl <- function(x, y, type = "klo", k = 1, px = NULL, py = NULL, pxy = NULL, w = NULL)
   # computation of mutual information is based on its decomposition in
   # marginal and joint differential entropies
-  return(entkl(x, type, k) + entkl(y, type, k) - entkl(cbind(x, y), type, k))
+  return(entkl(x, type, k, p = px, w = w) + entkl(y, type, k, p = py, w = w)
+         - entkl(cbind(x, y), type, k, p = pxy, w = w))
 
 ### INTERNAL FUNCTION
 # This is a lightly edited copy of Berrett's L2OptW function in IndepTest

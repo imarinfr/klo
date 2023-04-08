@@ -13,7 +13,7 @@ mig(x, y)
 
 entkl(x, type = "klo", k = 1, p = NULL, w = NULL)
 
-mikl(x, y, type = "klo", k = 1)
+mikl(x, y, type = "klo", k = 1, px = NULL, py = NULL, pxy = NULL, w = NULL)
 }
 \arguments{
 \item{x, y}{n-by-d numeric matrices, in which the n rows correspond to observations
@@ -28,7 +28,7 @@ distributions}
 the nearest neighbor (default), \code{2}, the second nearest,
 and so on.}
 
-\item{p}{TO BE DEFINED.}
+\item{p, px, py, pxy}{TO BE DEFINED.}
 
 \item{w}{Weights to use for NN weighting.}
 }
