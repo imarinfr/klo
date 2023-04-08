@@ -1,6 +1,8 @@
 #' @importFrom stats cov
 #' @importFrom expm sqrtm
-#' @importFrom FNN get.knnx
+#' @importFrom FNN knn.dist
+
+require(expm)
 
 #' @rdname mikl
 #' @title Estimates of the differential entropy and mutual information
@@ -10,7 +12,7 @@
 #' continuous variables
 #' @section Differential entropy estimates:
 #' \itemize{
-#'   \item\code{entG}  Gaussian estimate of the differential entropy of the
+#'   \item\code{entg}  Gaussian estimate of the differential entropy of the
 #'                     multivariate random variables \code{x} and \code{y}.
 #'                     If both \code{x} and \code{y} are multivariate Gaussians,
 #'                     then the estimate is asymptotically unbiased, otherwise
@@ -21,7 +23,7 @@
 #' }
 #' @section Mutual information entropy estimates:
 #' \itemize{
-#'   \item\code{miG}   Gaussian estimate of mutual information between the
+#'   \item\code{mig}   Gaussian estimate of mutual information between the
 #'                     multivariate random variables \code{x} and \code{y}.
 #'                     If both \code{x} and \code{y} are multivariate Gaussians,
 #'                     then the estimate is asymptotically unbiased, otherwise
@@ -33,11 +35,14 @@
 #' @param x,y n-by-d numeric matrices, in which the n rows correspond to observations
 #'            and the d columns to variables (or coordinates) of the multivariate
 #'            distributions
-#' @param type is the type of estimator, \code{"kl"} for the Kozachenko-Leonenko and
-#'             \code{"klo"} (default) for its offset version.
+#' @param type is the type of estimator, \code{"kl"} for the Kozachenko-Leonenko,
+#'             \code{"klo"} (default) for its offset version, and \code{"wkl"} and
+#'             \code{"wklo"} for the NN weighting versions.
 #' @param k is the rank of the nearest neighbor for which to search, \code{1},
 #'          the nearest neighbor (default), \code{2}, the second nearest,
 #'          and so on.
+#' @param p TO BE DEFINED.
+#' @param w Weights to use for NN weighting.
 #' @examples
 #' # Generate values from two random Gaussian vectors with different standard deviations
 #' n      <- 10000 # sample size
@@ -77,9 +82,9 @@ mig <- function(x, y)
 
 #' @rdname mikl
 #' @export
-entkl <- function(x, type = "klo", k = 1) {
+entkl <- function(x, type = "klo", k = 1, p = NULL, w = NULL) {
   # check input
-  if(type != "kl" && type != "klo")
+  if(type != "kl" && type != "klo" && type != "wkl" && type != "wklo")
     stop("incorrect type of estimator")
   if(k <= 0)
     stop("k-nearest neighbour 'k' must be larger than 0")
@@ -94,17 +99,23 @@ entkl <- function(x, type = "klo", k = 1) {
   # Gaussian and prepare the data to calculate the offset differential
   # entropy using nearest-neighbor algorithms
   entgp <- 0
-  if(type == "klo") {
+  if(type == "klo" || type == "wklo") {
     entgp <- entg(x)
-    x     <- x %*% solve(sqrtm(cov(x))) / sqrt(2 * pi * exp(1))
+    x <- x %*% solve(sqrtm(cov(x))) / sqrt(2 * pi * exp(1))
   }
-  # the nearest-neighbour distances
-  ldist <- log(get.knnx(x, x, k = k + 1, algorithm ="kd_tree")$nn.dist[,k + 1])
+  # the nearest-neighbor distances
+  ldist <- log(knn.dist(x, k = k))
   ldist[ldist == -Inf] <- 0
-  # differential entropy calculation in nats
-  ent <- d * mean(ldist) + log(n - 1) - psigamma(k) + log(2 * pi^(d / 2) / (d * gamma(d / 2)))
-  # return differential entropy in bits
-  return(log2(exp(ent)) + entgp)
+  # differential entropy calculation in bits
+  ent <- log2(exp(d * colMeans(ldist) + log(n - 1) - digamma(1:k) +
+                    log(2 * pi^(d / 2) / (d * gamma(d / 2))))) + entgp
+  if(type == "kl" || type == "klo") return(ent[k]) # unweighted kl
+  else {
+    # weighted kl
+    if(is.null(w)) w <- klweights(k, d)
+    else if(length(w) != k) stop("Weights array w has to be of length k")
+    return(as.numeric(ent %*% w))
+  }
 }
 
 #' @rdname mikl
@@ -113,3 +124,18 @@ mikl <- function(x, y, type = "klo", k = 1)
   # computation of mutual information is based on its decomposition in
   # marginal and joint differential entropies
   return(entkl(x, type, k) + entkl(y, type, k) - entkl(cbind(x, y), type, k))
+
+### INTERNAL FUNCTION
+# This is a lightly edited copy of Berrett's L2OptW function in IndepTest
+# R package. It calculates a weight vector to be used for the weighted
+# Kozachenko–Leonenko estimator. The weight vector has minimum L_2 norm
+# subject to the linear and sum-to-one constraints of (2) in Berrett,
+# Samworth and Yuan, Annals of Statistics (2019).
+klweights <- function(k, d) {
+  dprime <- floor(d / 4)
+  if(dprime == 0) return(c(rep(0, k - 1), 1))
+  g <- matrix(rep(0, (dprime + 1) * k), ncol = k)
+  g[1,] <- rep(1, k)
+  for(l in 1:dprime) g[l + 1,] <- exp(lgamma(1:k + 2 * l / d) - lgamma(1:k))
+  return(as.vector(t(g) %*% solve(g %*% t(g), c(1, rep(0, dprime)))))
+}

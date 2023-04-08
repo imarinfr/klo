@@ -5,6 +5,10 @@ from scipy.linalg import sqrtm, expm, inv, det
 from scipy.special import digamma
 from sklearn.neighbors import KDTree
 
+# Berret's Samworth and Yuan, Annals of Statistics (2019) NN weighting
+# has not yet been implemented in python. Likewise, the weighted
+# differential entropy has not yet ben implemented. If you require any
+# of these methods, please contact the authors at imarinfr@optocom.es
 
 # Gaussian estimate of the differential entropy of the multivariate
 # random variable x. If x is a multivariate Gaussian, then the estimate is

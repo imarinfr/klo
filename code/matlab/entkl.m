@@ -1,4 +1,4 @@
-function ent = entkl(x, type, k)
+function ent = entkl(x, type, k, p, w)
 % ENTKL: The Kozachenko-Leonenko (KL) estimate of the differential entropy
 % of the multivariate random variable x.
 %
@@ -16,7 +16,8 @@ function ent = entkl(x, type, k)
 if nargin < 1, error('please revise input'); end
 if nargin < 2, type = 'klo'; end
 if nargin < 3, k = 1; end
-if ~strcmp(type, 'kl') && ~strcmp(type, 'klo')
+if ~strcmp(type, 'kl') && ~strcmp(type, 'klo') && ...
+        ~strcmp(type, 'wkl') && ~strcmp(type, 'wklo')
     error('incorrect type of estimator');
 end
 assert(k > 0, 'k-nearest neighbour ''k'' must be larger than 0')
@@ -30,15 +31,25 @@ end
 % Gaussian and prepare the data to calculate the offset differential
 % entropy using nearest-neighbor algorithms
 entgp = 0;
-if strcmp(type, 'klo')
+if strcmp(type, 'klo') || strcmp(type, 'wklo')
     entgp = entg(x);
-    x     = x / sqrtm(cov(x)) / sqrt(2 * pi * exp(1));
+    x = x / sqrtm(cov(x)) / sqrt(2 * pi * exp(1));
 end
 % the nearest-neighbour search
-[~, dist] = knnsearch(x, x, 'K', k + 1);
-ldist = log(dist(:,k + 1));
+[~, dist] = knnsearch(x, x, K = k + 1);
+ldist = log(dist(:,2:k + 1));
 ldist(ldist == -Inf) = 0; % log 0 = 0
-% differential entropy calculation in nats
-ent = d * mean(ldist) + log(2 * pi^(d / 2) / (d * gamma(d / 2))) + log(n - 1) - psi(k);
-% return differential entropy in bits
-ent = log2(exp(ent)) + entgp;
+% differential entropy calculation in bits
+ent = log2(exp(d * mean(ldist) + ...
+    log(2 * pi^(d / 2) / (d * gamma(d / 2))) + ...
+    log(n - 1) - psi(1:k))) + entgp;
+if strcmp(type, 'kl') || strcmp(type, 'klo') % unweighted kl
+    ent = ent(k);
+else % weighted kl
+    if nargin < 4
+        w = klweights(k, d);
+    elseif length(w) ~= k
+        error('Weights array w has to be of length k');
+    end
+    ent = ent * w';
+end

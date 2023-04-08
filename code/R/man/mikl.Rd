@@ -11,7 +11,7 @@ entg(x)
 
 mig(x, y)
 
-entkl(x, type = "klo", k = 1)
+entkl(x, type = "klo", k = 1, p = NULL, w = NULL)
 
 mikl(x, y, type = "klo", k = 1)
 }
@@ -20,12 +20,17 @@ mikl(x, y, type = "klo", k = 1)
 and the d columns to variables (or coordinates) of the multivariate
 distributions}
 
-\item{type}{is the type of estimator, \code{"kl"} for the Kozachenko-Leonenko and
-\code{"klo"} (default) for its offset version.}
+\item{type}{is the type of estimator, \code{"kl"} for the Kozachenko-Leonenko,
+\code{"klo"} (default) for its offset version, and \code{"wkl"} and
+\code{"wklo"} for the NN weighting versions.}
 
 \item{k}{is the rank of the nearest neighbor for which to search, \code{1},
 the nearest neighbor (default), \code{2}, the second nearest,
 and so on.}
+
+\item{p}{TO BE DEFINED.}
+
+\item{w}{Weights to use for NN weighting.}
 }
 \description{
 Functions that compute the Gaussian and the regular
@@ -36,7 +41,7 @@ continuous variables
 \section{Differential entropy estimates}{
 
 \itemize{
-  \item\code{entG}  Gaussian estimate of the differential entropy of the
+  \item\code{entg}  Gaussian estimate of the differential entropy of the
                     multivariate random variables \code{x} and \code{y}.
                     If both \code{x} and \code{y} are multivariate Gaussians,
                     then the estimate is asymptotically unbiased, otherwise
@@ -50,7 +55,7 @@ continuous variables
 \section{Mutual information entropy estimates}{
 
 \itemize{
-  \item\code{miG}   Gaussian estimate of mutual information between the
+  \item\code{mig}   Gaussian estimate of mutual information between the
                     multivariate random variables \code{x} and \code{y}.
                     If both \code{x} and \code{y} are multivariate Gaussians,
                     then the estimate is asymptotically unbiased, otherwise
