@@ -94,6 +94,11 @@ entkl <- function(x, type = "klo", k = 1, p = NULL, w = NULL) {
   n <- nrow(x)
   d <- ncol(x)
   if(qr(x)$rank != d) stop("covariance matrix of x does not have full rank")
+  # get default prior weighting
+  if(is.null(p)) p <- rep(1, n) / n
+  if(length(p) != n) stop("p needs to be of length equal to the number of rows of x")
+  # sum of p needs to be exactly 1
+  p <- p / sum(p)
   # if type is 'kl' then calculate differential entropy with x directly.
   # If type is 'klo', then calculate differential entropy as if x were
   # Gaussian and prepare the data to calculate the offset differential
@@ -107,24 +112,28 @@ entkl <- function(x, type = "klo", k = 1, p = NULL, w = NULL) {
   ldist <- log(knn.dist(x, k = k))
   ldist[ldist == -Inf] <- 0
   # differential entropy calculation in bits
-  ent <- log2(exp(d * colMeans(ldist) + log(n - 1) - digamma(1:k) +
-                    log(2 * pi^(d / 2) / (d * gamma(d / 2))))) + entgp
-  if(type == "kl" || type == "klo") return(ent[k]) # unweighted kl
+  h <- log2(exp(d * ldist + log(n - 1) - matrix(rep(digamma(1:k), n), nrow = n, byrow = TRUE) +
+                  log(2 * pi^(d / 2) / (d * gamma(d / 2))))) + entgp
+  if(type == "kl" || type == "klo") h <- h[,k] # unweighted kl
   else {
     # weighted kl
     if(is.null(w)) w <- klweights(k, d)
     else if(length(w) != k) stop("Weights array w has to be of length k")
-    return(as.numeric(ent %*% w))
+    h = h %*% w
   }
+  return(list(ent = as.numeric(p %*% h), h = h))
 }
 
 #' @rdname mikl
 #' @export
-mikl <- function(x, y, type = "klo", k = 1, px = NULL, py = NULL, pxy = NULL, w = NULL)
+mikl <- function(x, y, type = "klo", k = 1, px = NULL, py = NULL, pxy = NULL, w = NULL) {
   # computation of mutual information is based on its decomposition in
   # marginal and joint differential entropies
-  return(entkl(x, type, k, p = px, w = w) + entkl(y, type, k, p = py, w = w)
-         - entkl(cbind(x, y), type, k, p = pxy, w = w))
+  hx  <- entkl(x, type, k, p = px, w = w)
+  hy  <- entkl(y, type, k, p = py, w = w)
+  hxy <- entkl(cbind(x, y), type, k, p = pxy, w = w)
+  return(list(mi = hx$ent + hy$ent - hxy$ent, mix = hx$h + hy$h - hxy$h))
+}
 
 ### INTERNAL FUNCTION
 # This is a lightly edited copy of Berrett's L2OptW function in IndepTest

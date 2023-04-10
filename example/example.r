@@ -38,8 +38,8 @@ entg(lms1)
 # These values are negative because the data values are less than unity.
 # The KL estimates of differential entropy without and then with offset are
 # obtained similarly:
-entkl(lms1, "kl")
-entkl(lms1, "klo")
+entkl(lms1, "kl")$ent
+entkl(lms1, "klo")$ent
 
 # The initial Gaussian estimate of mutual information between the two
 # images is obtained thus:
@@ -47,8 +47,8 @@ mig(lms1, lms2)
 
 # The estimate is non-negative, as expected. The KL estimates of mutual
 # information without and then with offset are obtained similarly:
-mikl(lms1, lms2, "kl")
-mikl(lms1, lms2, "klo")
+mikl(lms1, lms2, "kl")$mi
+mikl(lms1, lms2, "klo")$mi
 
 # Notice the progressive increase in the size of the mutual information
 # estimates with the KL estimator and the KLo estimator

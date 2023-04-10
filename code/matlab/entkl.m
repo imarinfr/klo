@@ -1,4 +1,4 @@
-function ent = entkl(x, type, k, p, w)
+function [ent, h] = entkl(x, type, k, p, w)
 % ENTKL: The Kozachenko-Leonenko (KL) estimate of the differential entropy
 % of the multivariate random variable x.
 %
@@ -28,6 +28,12 @@ assert(k > 0, 'k-nearest neighbour ''k'' must be larger than 0')
 if rank(x) ~= d
     error('covariance matrix of x does not have full rank');
 end
+if isempty(p), p = ones(n, 1) / n; end
+if length(p) ~= n
+    error('p needs to be of length equal to the number of rows of x')
+end
+% sum of p needs to be exactly 1
+p = p ./ sum(p);
 % if type is 'kl' then calculate differential entropy with x directly.
 % If type is 'klo', then calculate differential entropy as if x were
 % Gaussian and prepare the data to calculate the offset differential
@@ -42,16 +48,16 @@ end
 ldist = log(dist(:,2:k + 1));
 ldist(ldist == -Inf) = 0; % log 0 = 0
 % differential entropy calculation in bits
-ent = log2(exp(d * mean(ldist) + ...
-    log(2 * pi^(d / 2) / (d * gamma(d / 2))) + ...
-    log(n - 1) - psi(1:k))) + entgp;
+h = log2(exp(d * ldist + log(n - 1) - psi(1:k) + ...
+    log(2 * pi^(d / 2) / (d * gamma(d / 2))))) + entgp;
 if strcmp(type, 'kl') || strcmp(type, 'klo') % unweighted kl
-    ent = ent(k);
+    h = h(:,k);
 else % weighted kl
     if isempty(w)
         w = klweights(k, d);
     elseif length(w) ~= k
         error('Weights array w has to be of length k');
     end
-    ent = ent * w';
+    h = h * w';
 end
+ent = p' * h;

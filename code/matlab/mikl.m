@@ -1,4 +1,4 @@
-function mi = mikl(x, y, type, k, px, py, pxy, w)
+function [mi, mix] = mikl(x, y, type, k, px, py, pxy, w)
 % MIKL: The Kozachenko-Leonenko (KL) estimate of mutual information between
 % the multivariate random variables x and y. 
 %
@@ -22,7 +22,12 @@ if nargin < 5, px = []; end
 if nargin < 6, py = []; end
 if nargin < 7, pxy = []; end
 if nargin < 8, w = []; end
+
+[entx, hx] = entkl(x, type, k, px, w);
+[enty, hy] = entkl(y, type, k, py, w);
+[entxy, hxy] = entkl([x y], type, k, pxy, w);
+
 % computation of mutual information is based on its decomposition in
 % marginal and joint differential entropies
-mi = entkl(x, type, k, px, w) + entkl(y, type, k, py, w) ...
-    - entkl([x y], type, k, pxy, w);
+mi = entx + enty - entxy;
+mix = hx + hy - hxy;
