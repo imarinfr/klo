@@ -41,7 +41,10 @@ require(expm)
 #' @param k is the rank of the nearest neighbor for which to search, \code{1},
 #'          the nearest neighbor (default), \code{2}, the second nearest,
 #'          and so on.
-#' @param p,px,py,pxy TO BE DEFINED.
+#' @param p,px,py,pxy Weights to apply for the estimation of weighted differential entropies:
+#'                    (\code{"p"}) is used in \code{"entkl"}, whereas \code{"px"},
+#'                    \code{"py"}, and \code{"pxy"} are used in \code{"mikl"} for hx, hy,
+#'                    and joint hxy, respectively
 #' @param w Weights to use for NN weighting.
 #' @examples
 #' # Generate values from two random Gaussian vectors with different standard deviations

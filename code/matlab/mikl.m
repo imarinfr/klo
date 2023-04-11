@@ -13,6 +13,11 @@ function [mi, mix] = mikl(x, y, type, k, px, py, pxy, w)
 % x, y are each n-by-d numeric matrices, in which the n rows correspond to
 % observations and the d columns to variables (or coordinates) of the
 % multivariate distributions
+%
+% px, py, and pxy are the weights to apply for the estimation of weighted
+% differential entropies hx, hy, and joint hxy, respectively
+%
+% w are the weights to be used for NN weighting
 
 % check input
 if nargin < 2, error('please revise input'); end

@@ -11,6 +11,11 @@ function [ent, h] = entkl(x, type, k, p, w)
 % x is a n-by-d numeric matrix, in which the n rows correspond to
 % observations and the d columns to variables (or coordinates) of the
 % multivariate distributions
+%
+% p are the weights to apply for the estimation of weighted differential
+% entropy
+%
+% w are the weights to be used for NN weighting
 
 % check input
 if nargin < 1, error('please revise input'); end
